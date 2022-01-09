@@ -1,15 +1,12 @@
 import {
   getAuth,
-  signInWithPopup,
-  GoogleAuthProvider,
   onAuthStateChanged,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  updateProfile,
   signOut,
+  getIdToken,
 } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import initializeAuthentication from "../firebase/firebase.init";
 
 initializeAuthentication();
@@ -49,6 +46,9 @@ const useFirebase = () => {
   useEffect(() => {
     const unsubscribed = onAuthStateChanged(auth, (user) => {
       if (user) {
+        getIdToken(user).then((idToken) =>
+          localStorage.setItem("idToken", idToken)
+        );
         setUser(user);
       } else {
         setUser({});
@@ -71,30 +71,25 @@ const useFirebase = () => {
       .finally(() => setIsLoading(false));
   };
 
-  const email = user?.email;
-  console.log(email);
-  // useEffect(() => {
-  //   fetch(`http://localhost:5000/users/${email}`)
-  //     .then((res) => res.json())
-  //     .then((data) => setAdmin(data?.admin));
-  // }, [user.email]);
+  const saveUser = (email) => {
+    const user = { email };
+    // console.log(email);
+    fetch("https://gentle-depths-81066.herokuapp.com/useremail", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(user),
+    }).then();
+  };
 
-  // const saveUser = (email, displayName, method) => {
-  //   const user = { email, displayName };
-  //   console.log(user);
-  //   fetch("http://localhost:5000/users", {
-  //     method: method,
-  //     headers: { "content-type": "application/json" },
-  //     body: JSON.stringify(user),
-  //   }).then();
-  // };
+  const email = user;
+  // console.log(email);
 
   return {
     registerUser,
     handleSignIn,
     admin,
-    // saveUser,
     user,
+    saveUser,
     logOut,
     error,
     isLoading,

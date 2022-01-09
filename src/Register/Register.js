@@ -29,7 +29,7 @@ const Register = () => {
       <div className="grid bg-gray-700 min-h-screen place-items-center text-left text-white">
         <div className="w-11/12 p-12 bg-gray-800 sm:w-8/12 md:w-1/2 lg:w-5/12">
           <h1 className="text-xl font-semibold text-center text-white">
-            Please, Register 
+            Please, Register
           </h1>
           {!isLoading && (
             <form className="mt-6" onSubmit={handleRegister}>
@@ -46,7 +46,7 @@ const Register = () => {
                   name="name"
                   onBlur={handleRegisterInfo}
                   placeholder="Abd Ullah"
-                  autocomplete="given-name"
+                  autoComplete="given-name"
                   className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"
                   required
                 />
@@ -64,7 +64,7 @@ const Register = () => {
                 name="email"
                 onBlur={handleRegisterInfo}
                 placeholder="john.doe@company.com"
-                autocomplete="email"
+                autoComplete="email"
                 className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"
                 required
               />
@@ -80,7 +80,7 @@ const Register = () => {
                 name="password"
                 onBlur={handleRegisterInfo}
                 placeholder="********"
-                autocomplete="new-password"
+                autoComplete="new-password"
                 className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"
                 required
               />
@@ -96,7 +96,7 @@ const Register = () => {
                 name="password2"
                 onBlur={handleRegisterInfo}
                 placeholder="********"
-                autocomplete="new-password"
+                autoComplete="new-password"
                 className="block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner"
                 required
               />

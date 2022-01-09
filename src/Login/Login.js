@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useHistory } from "react-router-dom";
 import useAuth from "../hook/useAuth";
 
 const Login = () => {
   const [data, setData] = useState({});
+  const [token, setToken] = useState([]);
   const [errorMessage, setError] = useState("");
-  //   const location = useLocation();
+  const location = useLocation();
   const history = useHistory();
+  const redirect_uri = location.state?.from || "/userinfoform";
 
-  const { user, handleSignIn, isLoading, logOut, error } = useAuth();
+  const { user, handleSignIn, saveUser, isLoading, error } = useAuth();
 
   const handleSignInInfo = (e) => {
     let field = e.target.name;
@@ -21,21 +21,35 @@ const Login = () => {
     if (user) {
       field = "";
     }
-
     console.log(data);
   };
+
+  useEffect(() => {
+    fetch(`https://gentle-depths-81066.herokuapp.com/useremail`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("idToken")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setToken(data);
+        console.log(data);
+      });
+  }, []);
+
   const handleEmailPassSignIn = (e) => {
-    console.log(data.email);
     handleSignIn(data.email, data.password, history)
       .then((result) => {
-        console.log("login successfull!");
+        saveUser(data?.email);
         alert("login successfull!");
+        history.push("/userinfoform");
       })
       .catch((error) => {
         setError(error.message);
       });
     e.preventDefault();
   };
+
   return (
     <div className="grid justify-items-center content-center bg-gray-700 h-screen">
       <div
@@ -57,8 +71,8 @@ const Login = () => {
                 id="email"
                 placeholder="Enter Email Address"
                 className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
-                autofocus
-                autocomplete
+                autoFocus
+                autoComplete="true"
                 required
               />
             </div>
@@ -70,7 +84,7 @@ const Login = () => {
                 onBlur={handleSignInInfo}
                 id="password"
                 placeholder="Enter Password"
-                minlength="6"
+                minLength="6"
                 className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
                 focus:bg-white focus:outline-none"
                 required
@@ -80,7 +94,7 @@ const Login = () => {
               onClick={handleEmailPassSignIn}
               type="submit"
               placeholder="Log In"
-              className="w-full block bg-gray-700 hover:bg-indigo-400 focus:bg-indigo-400 text-white font-semibold rounded-lg
+              className="w-full block bg-gray-700 hover:bg-gray-500 focus:bg-indigo-400 text-white font-semibold rounded-lg
               px-4 py-3 mt-6"
             >
               Log In

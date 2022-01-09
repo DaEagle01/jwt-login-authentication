@@ -1,8 +1,10 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.css";
 import AuthProvider from "./AuthProvider/AuthProvider";
+import Header from "./Header/Header";
 import Home from "./Home";
 import Login from "./Login/Login";
+import PrivateRoute from "./Private/PrivateRoute";
 import Register from "./Register/Register";
 import UserInfoForm from "./UserInfoForm/UserInfoForm";
 import UserInfo from "./UserInfos/UserInfo";
@@ -12,16 +14,17 @@ function App() {
     <div className="App">
       <AuthProvider>
         <BrowserRouter>
+          <Header></Header>
           <Switch>
             <Route exact path="/">
               <Login></Login>
             </Route>
-            <Route path="/userinfoform">
+            <PrivateRoute path="/userinfoform">
               <UserInfoForm></UserInfoForm>
-            </Route>
-            <Route path="/userinfo">
+            </PrivateRoute>
+            <PrivateRoute path="/userinfo">
               <UserInfo></UserInfo>
-            </Route>
+            </PrivateRoute>
             <Route path="/register">
               <Register></Register>
             </Route>
